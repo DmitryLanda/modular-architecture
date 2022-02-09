@@ -1,0 +1,17 @@
+version: "3.9"
+services:
+    web:
+        image: "webdevops/php-nginx-dev:8.0-alpine"
+        working_dir: /app
+        user: application
+        restart: unless-stopped
+        volumes:
+            - .:/app:delegated
+            - ~/.composer:/home/application/.composer:delegated
+        environment:
+            WEB_DOCUMENT_ROOT: "/app/public"
+            WEB_DOCUMENT_INDEX: "index.php"
+            PHP_DATE_TIMEZONE: "UTC"
+            COMPOSER_MEMORY_LIMIT: "-1"
+        ports:
+            - "8000:80"
