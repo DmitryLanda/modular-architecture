@@ -45,3 +45,13 @@ And to avoid adding any coupling between levels
 
 - Do we always need to create new DTO when data crosses the border?
 - May be it is reasonable for Entrypoint/Application layers only?
+
+## Control and monitoring
+We cannot trust developers - anyone can do a mistake or to be lazzy.. 
+So we need to control dependency graph and rise errors when any rule mentioned above is broken
+
+Useful tools:
+- [deptrac](https://qossmic.github.io/deptrac/) static code analysis tool for PHP to visualize and enforce architectural decisions
+- [PHPArch?](https://github.com/j6s/phparch) architectural testing library for PHP projects
+- [PHP Architecture Tester?](https://github.com/carlosas/phpat) a static analysis tool to verify architectural requirements
+- [PHPUnit Application Architecture Test?](https://github.com/ta-tikoma/phpunit-architecture-test) The extension for PHPUnit to write architectural tests
