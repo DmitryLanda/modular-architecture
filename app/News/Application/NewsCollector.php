@@ -4,21 +4,21 @@ namespace App\News\Application;
 
 use App\News\Domain\News;
 use App\News\Domain\NewsRepositoryInterface;
-use App\User\Domain\User;
-use App\User\Domain\UserRepositoryInterface;
+use App\User\Application\Response\UserDto;
+use App\User\Entrypoint\Internal\UserModule;
 
 class NewsCollector
 {
     private NewsRepositoryInterface $newsRepository;
-    private UserRepositoryInterface $userRepository;
+    private UserModule $userModule;
 
     /**
-     * @todo it should not depend on the user domain level - may be user application or even entrypoint?
+     * @todo - Do we need UserModuleInterface instead?
      */
-    public function __construct(NewsRepositoryInterface $newsRepository, UserRepositoryInterface $userRepository)
+    public function __construct(NewsRepositoryInterface $newsRepository, UserModule $userModule)
     {
         $this->newsRepository = $newsRepository;
-        $this->userRepository = $userRepository;
+        $this->userModule = $userModule;
     }
 
     public function searchNews(): \Traversable
@@ -30,6 +30,9 @@ class NewsCollector
         }
     }
 
+    /**
+     * @todo - where to normalize and serialize?
+     */
     private function transformNews(News $news): array
     {
         return [
@@ -37,20 +40,19 @@ class NewsCollector
             'title' => $news->getTitle(),
             'body' => $news->getBody(),
             'author' => $this->transformAuthor(
-                $this->userRepository->getUserById($news->getAuthorId())
+                $this->userModule->getUserById($news->getAuthorId())
             )
         ];
     }
 
     /**
-     * @todo dont like using User from user domain layer here. May be we need to have dto on user application level?
+     * @todo - where to normalize and serialize?
      */
-    private function transformAuthor(User $author)
+    private function transformAuthor(UserDto $author)
     {
         return [
             'id' => $author->getId(),
-            'first_name' => $author->getFirstName(),
-            'last_name' => $author->getLastName(),
+            'full_name' => $author->getFullName(),
             'avatar' => $author->getAvatar()
         ];
     }

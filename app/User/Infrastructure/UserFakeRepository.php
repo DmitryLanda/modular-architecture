@@ -18,11 +18,22 @@ class UserFakeRepository implements UserRepositoryInterface
 
     public function getUserById(string $id): User
     {
-        return new User(
+        $user = new User(
+            $id,
             $this->faker->firstName,
-            $this->faker->lastName,
-            $this->faker->imageUrl,
-            $id
+            $this->faker->lastName
+        );
+        $user->setAvatar($this->faker->imageUrl);
+
+        return $user;
+    }
+
+    public function createUser(string $id, string $firstName, string $lastName): User
+    {
+        return new User(
+            $id,
+            $firstName,
+            $lastName
         );
     }
 }

@@ -32,7 +32,13 @@ There are few rules that app must follow:
   ## Communication between layers (inside the module)
   The only possible flow (direction) is:
   `Entrypoint` -> `Application` -> `Domain` <- `Infrastructure`
+
+  **Example:**
   
+  Request: Controller -> (map request into dto) -> Application -> Domain
+  Response: Domain -> Application -> (map response into dto) -> Controller -> Normalize/Serialize
+
+
   It means that:
   - `Entrypoint` knows how to process the task with help of `Application`, but has no info about other layers.
   - `Application` Knows how to perform the task through the `Domain`, but has no info about other layers.
@@ -55,3 +61,9 @@ Useful tools:
 - [PHPArch?](https://github.com/j6s/phparch) architectural testing library for PHP projects
 - [PHP Architecture Tester?](https://github.com/carlosas/phpat) a static analysis tool to verify architectural requirements
 - [PHPUnit Application Architecture Test?](https://github.com/ta-tikoma/phpunit-architecture-test) The extension for PHPUnit to write architectural tests
+
+
+## Run this example
+ - `docker-compose up -d`
+ - `curl "http://localhost:8000/users?first_name=foo&last_name=bar"` To create user
+ - `curl "http://localhost:8000/news"` To get news list

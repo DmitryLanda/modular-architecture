@@ -2,8 +2,8 @@
 
 namespace App\User\Application;
 
-use App\News\Domain\UserRepositoryInterface;
-use App\User\Domain\User;
+use App\User\Application\Response\UserDto;
+use App\User\Domain\UserRepositoryInterface;
 
 class UserProvider
 {
@@ -14,8 +14,10 @@ class UserProvider
         $this->repository = $repository;
     }
 
-    public function getUserById(string $id): User
+    public function getUserById(string $id): UserDto
     {
-        return $this->repository->getUserById($id);
+        $user = $this->repository->getUserById($id);
+
+        return UserDto::fromUser($user);
     }
 }
